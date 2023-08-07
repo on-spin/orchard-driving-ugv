@@ -1,0 +1,14 @@
+<launch>
+  <arg name="ns" default="ugv" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-f velodyne -d $(find ugv_pkg)/launch/display.rviz" output="screen" />
+
+  <group ns="$(arg ns)">
+    <include file="$(find dreamvu_pal_navigation)/launch/start_pal.launch" />
+    <include file="$(find realsense2_camera)/launch/start_rs.launch" />
+    <include file="$(find ublox_gps)/launch/start_base.launch" />
+    <include file="$(find ublox_gps)/launch/start_rover.launch" />
+    <include file="$(find velodyne_pointcloud)/launch/start_vlp16.launch" />
+  </group>
+
+</launch>

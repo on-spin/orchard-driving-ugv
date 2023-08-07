@@ -1,0 +1,5 @@
+<launch>
+  <node name="depth_scan_node" pkg="dreamvu_pal_navigation" type="stereo_publisher" output="screen" />
+</launch>  
+
+

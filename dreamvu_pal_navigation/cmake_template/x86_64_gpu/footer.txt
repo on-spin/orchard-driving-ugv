@@ -1,0 +1,72 @@
+set(PAL_INCLUDE_DIR $ENV{HOME}/DreamVu/PAL/include )
+set(PAL_LIBRARY /usr/local/lib/libPAL.so /usr/local/lib/libturbojpeg.so )
+
+include_directories(
+        ${PAL_INCLUDE_DIR}
+        ${catkin_INCLUDE_DIRS} 
+        ${OpenCV_INCLUDE_DIRS} 
+
+)
+
+set(AVAILABLE_ROS_VERSIONS "melodic;lunar;kinetic;jade;indigo;noetic")
+
+foreach(version ${AVAILABLE_ROS_VERSIONS})
+	find_path(ROS_LIBS libroscpp.so PATHS /opt/ros/${version}/lib)
+endforeach()
+
+
+link_directories(
+        ${ROS_LIBS}
+        /usr/include/libusb-1.0
+)
+
+set(CMAKE_CXX_FLAGS "-w")
+
+set(CATKIN_LIBRARIES libudev.so cv_bridge.so image_transport.so message_filters.so tinyxml2.so class_loader.so dl.so roslib.so rospack.so python2.7.so boost_program_options.so tinyxml.so roscpp.so boost_filesystem.so boost_signals.so rosconsole.so rosconsole_log4cxx.so rosconsole_backend_interface.so log4cxx.so boost_regex.so xmlrpcpp.so roscpp_serialization.so rostime.so cpp_common.so boost_system.so boost_thread.so boost_chrono.so boost_date_time.so boost_atomic.so pthread.so console_bridge.so laser_scan_filters.so)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(PKG_OPENCV REQUIRED opencv)
+
+add_executable(publisher /usr/src/tensorrt/bin/common/logger.o src/depth_scan_node.cpp)
+add_dependencies(publisher ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(publisher ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(stereo_publisher /usr/src/tensorrt/bin/common/logger.o src/stereo_node.cpp )
+add_dependencies(stereo_publisher ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(stereo_publisher ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(stereo_multi_publisher /usr/src/tensorrt/bin/common/logger.o src/multi_stereo_node.cpp )
+add_dependencies(stereo_multi_publisher ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(stereo_multi_publisher ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(multi_publisher /usr/src/tensorrt/bin/common/logger.o src/multi_depth_scan_node.cpp )
+add_dependencies(multi_publisher ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(multi_publisher ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(broadcast /usr/src/tensorrt/bin/common/logger.o src/broadcast_scan_node.cpp )
+add_dependencies(broadcast ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(broadcast ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(people_tracker /usr/src/tensorrt/bin/common/logger.o src/people_tracking_node.cpp )
+add_dependencies(people_tracker ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(people_tracker ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(people_following /usr/src/tensorrt/bin/common/logger.o src/people_following_node.cpp )
+add_dependencies(people_following ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(people_following ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(object_tracker /usr/src/tensorrt/bin/common/logger.o src/object_tracking_node.cpp )
+add_dependencies(object_tracker ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(object_tracker ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(object_following /usr/src/tensorrt/bin/common/logger.o src/object_following_node.cpp )
+add_dependencies(object_following ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(object_following ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(object_detector /usr/src/tensorrt/bin/common/logger.o src/object_detection_node.cpp )
+add_dependencies(object_detector ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(object_detector ${PAL_LIBRARY} ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS} ${V4l2_LIBRARIES})
+
+add_executable(image_subscriber  src/image_subscriber.cpp )
+add_dependencies(image_subscriber ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(image_subscriber ${CATKIN_LIBRARIES} ${PKG_OPENCV_LDFLAGS})
